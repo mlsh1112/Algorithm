@@ -1,0 +1,51 @@
+#include <stdio.h>
+
+int m,n;
+char x[100];
+char y[100];
+float gap_p,mis_p;
+
+void sequencealignment(){
+    int i,j; float penalty;
+    float opt[100][100];
+
+    for(i=m;i>=0;i--){
+        for(j=n;j>=0;j--){
+            if(i==m)
+                opt[i][j]=2*(n-j);
+            else if(j==n)
+                opt[i][j]=2*(m-i);
+            else{
+                
+                if(x[i]==y[j])
+                    penalty=0;
+                else
+                    penalty=mis_p;
+               
+                if(opt[i+1][j+1]+penalty<opt[i+1][j]+gap_p){
+                    if(opt[i+1][j+1]+penalty<opt[i][j+1]+gap_p)
+                        opt[i][j]=opt[i+1][j+1]+penalty;
+                    else
+                        opt[i][j]=opt[i][j+1]+gap_p;
+                }
+                else{
+                    if(opt[i+1][j]+gap_p<opt[i][j+1]+gap_p)
+                        opt[i][j]=opt[i+1][j]+gap_p;
+                    else
+                        opt[i][j]=opt[i][j+1]+gap_p;
+                }
+            }
+        }
+    }
+    
+    
+    printf("%.1f",opt[0][0]);
+}
+
+
+int main(){
+    
+    scanf("%d %d %s %s %f %f",&m,&n,x,y,&gap_p,&mis_p);
+    sequencealignment();
+    
+}
